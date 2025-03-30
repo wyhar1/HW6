@@ -1,7 +1,8 @@
 
+
 /******************************************************************
  *
- *   YOUR NAME / SECTION NUMBER
+ *   Wyatt Harris COMP 272 001
  *
  *   This java file contains the problem solutions for the methods lastBoulder,
  *   showDuplicates, and pair methods. You should utilize the Java Collection
@@ -63,13 +64,29 @@ public class ProblemSolutions {
      * returning the 0 if queue is empty else return pq.peek().
      */
 
-  public static int lastBoulder(int[] boulders) {
+    public static int lastBoulder(int[] boulders) {
 
-      //
-      // ADD YOUR CODE HERE - DO NOT FORGET TO ADD YOUR NAME / SECTION # ABOVE
-      //
-      return -1;
-  }
+        //
+        // ADD YOUR CODE HERE - DO NOT FORGET TO ADD YOUR NAME / SECTION # ABOVE
+        //
+        PriorityQueue<Integer> queue = new PriorityQueue<>(Collections.reverseOrder());
+        for (int i = 0; i < boulders.length; i++) {
+            queue.add(boulders[i]);
+        }
+        int boulder1,boulder2;
+        while (queue.size() > 1) {
+            boulder1 = queue.poll();
+            boulder2 = queue.poll();
+            boulder1 = Math.abs(boulder1 - boulder2);
+            if(boulder1 != 0){
+                queue.add(boulder1);
+            }
+        }
+        if (queue.size() == 1) {
+            return queue.poll();
+        }
+        return 0;
+    }
 
 
     /**
@@ -94,7 +111,23 @@ public class ProblemSolutions {
         //
         //  YOUR CODE GOES HERE
         //
-        return new ArrayList<>();  // Make sure result is sorted in ascending order
+        Set<String> set = new HashSet<>();
+        ArrayList<String> list = new ArrayList<>();
+        for (String s : input) {
+            set.add(s);
+            list.add(s);
+        }
+        while(!set.isEmpty()) {
+            String toRemove = set.iterator().next();
+            set.remove(toRemove);
+            list.remove(toRemove);
+        }
+        Set<String> set2 = new HashSet<>(list);
+        ArrayList<String> list2 = new ArrayList<>(set2);
+        Collections.sort(list2);
+
+
+        return list2;  // Make sure result is sorted in ascending order
 
     }
 
@@ -134,6 +167,32 @@ public class ProblemSolutions {
         //
         //  YOUR CODE GOES HERE
         //
-        return new ArrayList<>();  // Make sure returned lists is sorted as indicated above
+        int[] copy = Arrays.copyOf(input, input.length);
+        Arrays.sort(copy);
+        int forwardRail = copy[0];
+        int backRail = copy[input.length - 1];
+        ArrayList<String> list = new ArrayList<>();
+        int i = 0;
+        int j = input.length - 1;
+        while(forwardRail <= backRail) {
+            if (forwardRail + backRail == k){
+                list.add("(" + forwardRail + ", " + backRail + ")");
+                i++;
+                j--;
+            }
+            else if (forwardRail + backRail > k){
+                j--;
+            }
+            else{
+                i++;
+            }
+            forwardRail = copy[i];
+            backRail = copy[j];
+        }
+        Set<String> set = new HashSet<>(list);
+        ArrayList<String> list2 = new ArrayList<>(set);
+        Collections.sort(list2);
+
+        return list2;  // Make sure returned lists is sorted as indicated above
     }
 }
